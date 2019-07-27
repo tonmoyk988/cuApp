@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.hfad.cuapp.loginActivity">
+
+    <include
+        android:id="@+id/logipagenbar"
+        layout="@layout/homepage_bar">
+    </include>
+
+    <EditText
+        android:id="@+id/loginemail"
+        android:layout_below="@+id/logipagenbar"
+        android:layout_marginTop="@android:dimen/app_icon_size"
+        android:layout_marginStart="10dp"
+        android:hint="Email Address :"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/loginpassword"
+        android:layout_below="@+id/loginemail"
+        android:layout_alignLeft="@+id/loginemail"
+        android:layout_marginTop="10dp"
+        android:hint="Password :"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_below="@+id/loginpassword"
+        android:layout_alignLeft="@+id/loginpassword"
+        android:layout_marginTop="10dp"
+        android:text="Log in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/needanaccount"
+        android:layout_marginTop="@android:dimen/app_icon_size"
+        android:layout_below="@+id/loginButton"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="Need An Account !"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+
+
+
+
+</RelativeLayout>

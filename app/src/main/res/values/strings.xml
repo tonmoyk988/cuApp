@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">CU App</string>
+    <string name="dept">Dept. Of CSE</string>
+    <string name="drawer_opem">Drawer Open</string>
+    <string name="drawer_close">Drawer Close</string>
+    <string name="campus_icon">Campus</string>
+    <string name="logout">"Log Out"</string>
+</resources>

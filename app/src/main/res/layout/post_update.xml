@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".dept_update"
+    android:background="@color/white">
+
+    <ImageView
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/blank_profile_pic"
+        android:scaleType="fitXY"
+        android:id="@+id/poster_img"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/poster_img"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="User" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/poster_img"
+        android:layout_alignLeft="@+id/poster_img"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="vertical"
+        android:id="@+id/line1">
+
+        <EditText
+            android:id="@+id/not_topic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Update topic :" />
+
+        <EditText
+            android:id="@+id/update"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_alignTop="@+id/not_topic"
+            android:autoSizeTextType="uniform"
+            android:hint="Updates"/>
+
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/line1"
+        android:src="@drawable/add"
+        android:layout_alignRight="@+id/line1"
+        android:autofillHints="post"
+        />
+    <FrameLayout
+        android:id="@+id/postcontainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/add"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@color/backgroundcolor">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="10dp"
+            android:id="@+id/postlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignStart="@+id/postcontainer" />
+    </FrameLayout>
+
+</RelativeLayout>

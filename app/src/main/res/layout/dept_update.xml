@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:id="@+id/update_relayout1">
+
+    <ImageView
+        android:layout_height="45dp"
+        android:layout_width="45dp"
+        android:src="@drawable/blank_profile_pic"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:id="@+id/poster_img"
+        />
+
+        <LinearLayout
+            android:id="@+id/lin1"
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/poster_img"
+            android:layout_alignTop="@+id/poster_img"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            >
+
+            <TextView
+                android:id="@+id/poster_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="Tonmoy"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/update_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="2 hrs"
+                android:textColor="@color/gray"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@+id/poster_img"
+        android:layout_below="@+id/poster_img"
+        android:orientation="vertical"
+        android:id="@+id/postlinlay">
+        <TextView
+            android:id="@+id/update_heading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Economics"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tommorows class is cancelled...shobai khushur thelai nachte nachte hagu kore daw"
+            android:id="@+id/update_status"
+            android:layout_below="@id/update_heading"
+            android:layout_alignLeft="@+id/update_heading"
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignLeft="@+id/postlinlay"
+        android:layout_below="@+id/postlinlay">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="30dp"
+            android:alpha="0.4"
+            android:src="@drawable/ic_thumb_up_24px"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/like"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_marginStart="5dp"
+            android:paddingTop="5dp"
+            android:id="@+id/likecount"/>
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="30dp"
+            android:alpha="0.4"
+            android:src="@drawable/ic_thumb_down_24px"
+            android:layout_marginLeft="10dp"
+            android:paddingTop="1dp"
+            android:id="@+id/dislike"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_marginStart="5dp"
+            android:paddingTop="5dp"
+            android:id="@+id/dislikecount"/>
+
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

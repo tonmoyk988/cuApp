@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.hfad.cuapp.RegisterActivity">
+    <include
+        layout="@layout/homepage_bar"
+        android:id="@+id/registertoolbar">
+    </include>
+
+    <EditText
+        android:id="@+id/personname"
+        android:layout_marginTop="@android:dimen/app_icon_size"
+        android:layout_marginStart="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registertoolbar"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Name" />
+    <EditText
+        android:id="@+id/emailaddressofuser"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/personname"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:hint="Email Address :"/>
+    <EditText
+        android:id="@+id/passwword"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/emailaddressofuser"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:hint="Password :"/>
+
+    <Button
+        android:id="@+id/registerbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/passwword"
+        android:text="Register" />
+
+
+
+</RelativeLayout>
