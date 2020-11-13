@@ -8,20 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1001129199423:android:b2471353496fb92e",
+        "mobilesdk_app_id": "1:1001129199423:android:49daaa3c5737122ae9f58a",
         "android_client_info": {
           "package_name": "com.hfad.cuapp"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "1001129199423-dd7tfo5qhb4k5orplmt6kag0o4dq72gi.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.hfad.cuapp",
-            "certificate_hash": "257c6284fffc9523f93997dd7a60bd8f75534067"
-          }
-        },
         {
           "client_id": "1001129199423-rm8i2h9o0kkjhopqd3d8gmbrgal4nn5a.apps.googleusercontent.com",
           "client_type": 3

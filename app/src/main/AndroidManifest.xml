@@ -3,7 +3,10 @@
     package="com.hfad.cuapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
         android:name=".CUappFirebase"
         android:allowBackup="true"
@@ -12,8 +15,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".routinr_Class"
-            android:parentActivityName=".MainActivity"></activity>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB5Nm3umNs02C_RdCtn5xNEv0d6PPUqCAE" />
+
+        <activity android:name=".Calender"></activity>
+        <activity android:name=".dept_options.activity.add_new_activity" />
+        <activity
+            android:name=".dept_options.activity.activities"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".new_user_setup" />
+        <activity android:name=".Firebase.authentication.firebaseauthui" />
+        <activity
+            android:name=".routinr_Class"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".setupActivity" />
         <activity android:name=".loginActivity" />
         <activity android:name=".RegisterActivity" />
@@ -21,7 +41,9 @@
             android:name=".dept_update"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".campus_home" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

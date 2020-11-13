@@ -1,9 +1,12 @@
 package com.hfad.cuapp;
+import com.hfad.cuapp.dept_options.activity.*;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +15,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.hfad.cuapp.viewModel.Global_variable;
+
 import java.util.List;
+import java.util.Objects;
 
 public class myAdapter extends RecyclerView.Adapter<myAdapter.viewHolder>{
     private List<rept_home_page_activity_list> activity_lists;
@@ -44,13 +56,19 @@ public class myAdapter extends RecyclerView.Adapter<myAdapter.viewHolder>{
             public void onClick(View view) {
                 Toast.makeText(context,activity.getContent_name(),Toast.LENGTH_SHORT).show();
                 if (activity.getContent_name()=="Class Updates"){
-                    Intent intent = new Intent(context,dept_update.class);
-                    context.startActivity(intent);
-
+                    if(Global_variable.batchForpost!=null) {
+                        Intent intent = new Intent(context, dept_update.class);
+                        context.startActivity(intent);
+                    }
                 }
                 else if(activity.getContent_name()=="Class Schedule"){
                     Intent intent = new Intent(context,routinr_Class.class);
                     context.startActivity(intent);
+                }
+                else if(activity.getContent_name()=="Activities"){
+                    if(Global_variable.batchForpost!=null) {
+                        context.startActivity(new Intent(context, activities.class));
+                    }
                 }
             }
         });

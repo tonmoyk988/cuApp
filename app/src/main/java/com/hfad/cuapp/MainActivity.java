@@ -1,33 +1,43 @@
 package com.hfad.cuapp;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.IdpResponse;
+import com.google.android.material.navigation.NavigationView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 //import android.widget.Toolbar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.hfad.cuapp.Firebase.authentication.firebaseauthui;
+import com.hfad.cuapp.model.dept_main_page;
+import com.hfad.cuapp.viewModel.Global_variable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -35,35 +45,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
+
+
     //RecyclerView
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<rept_home_page_activity_list> activity_lists;
     private ImageView imageView;
 
+    private FirebaseUser user;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthstatelistener;
     private DatabaseReference dUsers;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
+    public static String batchForpost;
 
     public MainActivity(){
-        activity_lists = new ArrayList<>();//int r= R.drawable.update;
-        rept_home_page_activity_list item1 = new rept_home_page_activity_list("Class Updates",R.drawable.update);
-        activity_lists.add(item1);
-        rept_home_page_activity_list item2  = new rept_home_page_activity_list("Class Schedule",R.drawable.schedule);
-        activity_lists.add(item2);
-        rept_home_page_activity_list item3  = new rept_home_page_activity_list("Notice Board",R.drawable.notice_board);
-        activity_lists.add(item3);
-        rept_home_page_activity_list item4  = new rept_home_page_activity_list("Community",R.drawable.community);
-        activity_lists.add(item4);
-        rept_home_page_activity_list item5  = new rept_home_page_activity_list("Slides and Books",R.drawable.share);
-        activity_lists.add(item5);
-        rept_home_page_activity_list item6  = new rept_home_page_activity_list("Activities",R.drawable.activity);
-        activity_lists.add(item6);
-        rept_home_page_activity_list item7  = new rept_home_page_activity_list("Dept. info",R.drawable.info);
-        activity_lists.add(item7);
-        rept_home_page_activity_list item8  = new rept_home_page_activity_list("Gallery",R.drawable.gallery);
-        activity_lists.add(item8);
+        dept_main_page lis= new dept_main_page();
+        activity_lists = lis.getlist();
+            setBatchForpost();
+
+
     }
 
 
@@ -72,20 +75,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //setBatchForpost();
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        user=FirebaseAuth.getInstance().getCurrentUser();
+        if(user!=null){
+            setBatchForpost();
+            //dUsers= FirebaseDatabase.getInstance().getReference().child("Users");
+            //dUsers.child("condition").setValue("hi");
+            //dUsers.keepSynced(true);
+        }
 
         //FirebaseAuthentication
         mAuth=FirebaseAuth.getInstance();
         mAuthstatelistener = new FirebaseAuth.AuthStateListener() {
+
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser()==null){
+
+                    startActivity(new Intent(MainActivity.this, firebaseauthui.class));
+                    finish();
+                    /*
                     Intent intent =new Intent(MainActivity.this,loginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    startActivity(intent);*/
+                }
+                if(firebaseAuth.getCurrentUser()!=null){
+                    setBatchForpost();
                 }
             }
         };
+
+
 
 
 
@@ -102,8 +124,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navi=(NavigationView)findViewById(R.id.navmenu);
         navi.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
 
-        dUsers= FirebaseDatabase.getInstance().getReference().child("Users");
-        dUsers.keepSynced(true);
+
+
 
 
         recyclerView = (RecyclerView) findViewById(R.id.homepage_list);
@@ -116,19 +138,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    //For passing the batch number to the dept_update ativity
+    public static void setBatchForpost() {
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            DatabaseReference batch_ref = FirebaseDatabase.getInstance().getReference("User_info").child(FirebaseAuth.getInstance().getUid());
+            batch_ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    batchForpost=(String) dataSnapshot.child("batch").getValue();
+                    Global_variable.batchForpost=(String) dataSnapshot.child("batch").getValue();
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        }
+    }
+
 
 
     @Override
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthstatelistener);
+        //setBatchForpost();
     }
     @Override
     protected void onRestart() {
         super.onRestart();
     }
-
-
 
 
     @Override
@@ -172,7 +212,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChild(uemail)){
                     //Intent intent =new Intent(MainActivity.this,);
-
                 }
             }
 
@@ -182,6 +221,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-
 
 }

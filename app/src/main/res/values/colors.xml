@@ -7,5 +7,6 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="gray">#1D1D1D</color>
-    <color name="likeblue">#3E79E8</color>
+    <color name="ash">#808184</color>
+    <color name="likeblue">#FF864638</color>
 </resources>

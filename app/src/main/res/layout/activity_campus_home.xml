@@ -5,14 +5,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".campus_home"
-    android:background="#006C0D"
     android:id="@+id/campus_home">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/shuttle_train"
+            android:id="@+id/shuttleTrain"
+            android:layout_margin="8pt">
+                <TextView android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Shuttle Train"
+                    android:textSize="50dp"
+                    android:textColor="#000000"
+                    android:gravity="center"
 
-        <TextView android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:text="Shuttle Train"
-            android:background="@drawable/shuttle_train"/>
+                    />
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Campus Info"
+            android:textSize="50dp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:background="#50BF50"
+            android:layout_below="@+id/shuttleTrain"
+            android:layout_marginStart="8pt"
+            android:layout_marginBottom="8pt"
+            android:layout_marginEnd="8pt"
+            android:id="@+id/campus_info"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Gallery"
+            android:textSize="50dp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:background="#50BF50"
+            android:layout_below="@+id/campus_info"
+            android:layout_marginStart="8pt"
+            android:layout_marginBottom="8pt"
+            android:layout_marginEnd="8pt"
+            android:id="@+id/campus_gal"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/campus_gal"
+            android:id="@+id/mapLayout">
+        </RelativeLayout>
 
 
 </RelativeLayout>

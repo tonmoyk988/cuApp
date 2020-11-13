@@ -1,39 +1,48 @@
 package com.hfad.cuapp;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+
+import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.hfad.cuapp.InterFaces.RecycleViewOnItemClick;
+import com.hfad.cuapp.model.Posts;
+import com.hfad.cuapp.viewModel.Global_variable;
+import com.hfad.cuapp.viewModel.class_update_adapter;
 //import android.v7.widget.Toolbar;
 
 public class dept_update extends AppCompatActivity {
@@ -42,16 +51,19 @@ public class dept_update extends AppCompatActivity {
 
     String id,usernamvevalue;
     EditText uptop,up;
-    ImageView add,like,dislike;
+    ImageView add,like,dislike,f_menu;
     TextView user_name;
     updatepost_into_database intodata;
     DatabaseReference reff;
-    RecyclerView recyclerView;
-    List<Posts> posts;
-    Posts p;
-    ArrayList<String> nudates;
-    private FirebaseAuth mAuth;
-    private DatabaseReference dReff;
+    ArrayList<Posts> posts;
+    ArrayList<String> post_database_key_list;
+    class_update_adapter adapter;
+    RecyclerView rv;
+    public  String b ;
+    DatabaseReference batch_ref = FirebaseDatabase.getInstance().getReference("User_info").child(FirebaseAuth.getInstance().getUid());
+
+
+
 
 
     @Override
@@ -59,13 +71,13 @@ public class dept_update extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dept_update);
 
+
+
         toolbar = (Toolbar) findViewById(R.id.update_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Updates");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mAuth=FirebaseAuth.getInstance();
-        dReff=FirebaseDatabase.getInstance().getReference();
 
         user_name=(TextView)findViewById(R.id.poster_name);
         uptop = (EditText)findViewById(R.id.not_topic);
@@ -75,8 +87,26 @@ public class dept_update extends AppCompatActivity {
         dislike=(ImageView) findViewById(R.id.dislike);
 
 
-        reff= FirebaseDatabase.getInstance().getReference().child("Post");
+
+
         intodata=new updatepost_into_database();
+
+
+        //Get the bactch of the current User
+        batch_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //final String s;
+                b=dataSnapshot.child("batch").getValue().toString();
+                usernamvevalue=dataSnapshot.child("name").getValue().toString();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
 
 
@@ -84,16 +114,41 @@ public class dept_update extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                reff= FirebaseDatabase.getInstance().getReference("Users_post");
 
                 String uptop1 = uptop.getText().toString();
                 String update = up.getText().toString();
                 String s1=uptop.getText().toString().trim();
                 String s2= up.getText().toString().trim();
+                //String time = Calendar.getInstance().getTime().toString();
+                final SimpleDateFormat simpleDateFormat= new SimpleDateFormat();
+                String time=simpleDateFormat.format(new Date());
+                char[] c=time.toCharArray();
+                int i=0;
+                for(char ch:c){
+                    i++;
+                    if((int)ch==32){break;}
+                }
+                String timepart=time.substring(i,time.length());
+                Calendar calendar = Calendar.getInstance();
+                String temp = DateFormat.getDateInstance(DateFormat.MEDIUM).format(calendar.getTime());
+                char[] d =temp.toCharArray();
+                i=0;
+                for(char ch:d){
+                    i++;
+                    if((int)ch==44){break;}
+                }
+                String postdate = temp.substring(0,i-1);//time.substring(0,i-1);
+                timepart =timepart+","+postdate;
                 if(!TextUtils.isEmpty(s1)&&!TextUtils.isEmpty(s2)){
                     intodata.setUpdatetopic(uptop1);
                     intodata.setUpdate(update);
                     intodata.setU_name(usernamvevalue);
-                    reff.push().setValue(intodata);
+                    intodata.setPost_time(timepart);
+                    intodata.setUid(FirebaseAuth.getInstance().getUid());
+                    //intodata.setLikes("");
+                    //intodata.setDisLikes("");
+                    reff.child(b).child("posts").push().setValue(intodata);
                     Toast.makeText(getApplicationContext(),"Updated Successfully",Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -106,40 +161,36 @@ public class dept_update extends AppCompatActivity {
         });
 
 
+        rv =(RecyclerView) findViewById(R.id.postlist);
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        posts= new ArrayList<Posts>();
+        post_database_key_list=new ArrayList<String>();
 
 
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users_post").child(Global_variable.batchForpost).child("posts");
 
-        //Keep synced data locally
-        reff.keepSynced(true);
+        databaseReference.keepSynced(true);
 
-        posts=new ArrayList<>();
-
-
-
-        recyclerView =(RecyclerView)findViewById(R.id.postlist);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        /*UpdateAdapter adapter = new UpdateAdapter(posts,this);
-        recyclerView.setAdapter(adapter);*/
-
-
-    }
-
-
-
-    private void likehandler() {
-    }
-
-    public void setUsername() {
-
-        String userid=mAuth.getUid();
-        dReff=dReff.child("Users").child(userid);
-
-        dReff.addValueEventListener(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                usernamvevalue=dataSnapshot.child("name").getValue().toString();
+                posts.clear();
+                post_database_key_list.clear();
+                for(DataSnapshot data:dataSnapshot.getChildren()){
+                    Posts p = data.getValue(Posts.class);
+                    posts.add(p);
+
+                    String pdkl = data.getKey().toString();
+                    post_database_key_list.add(pdkl);
+
+                }
+                Collections.reverse(posts);
+                Collections.reverse(post_database_key_list);
+
+                adapter = new class_update_adapter(dept_update.this,posts,post_database_key_list);
+                rv.setAdapter(adapter);
+
             }
 
             @Override
@@ -147,15 +198,43 @@ public class dept_update extends AppCompatActivity {
 
             }
         });
-
-
     }
 
+/*
+    //PopUPmenu For editing or deleting post
+    public void popUpMenu(View v){
+        PopupMenu popup = new PopupMenu(this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.dept_update_popup_menu, popup.getMenu());
+        popup.show();
+
+        //PopupMenu popupMenu  = new PopupMenu(this,v);
+        //popupMenu.setOnMenuItemClickListener(this);
+        //popupMenu.inflate(R.menu.dept_update_popup_menu);
+        //popupMenu.show();
+    }
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case R.id.edit:
+                Toast.makeText(this,"Edit was clicked in pos "+getitempos,Toast.LENGTH_SHORT).show();
+
+                return true;
+            case R.id.delete:
+                Toast.makeText(this,"Delete was clicked in pos "+getitempos,Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return false;
+        }
+    }
+
+*/
 
     @Override
     protected void onStart() {
         super.onStart();
 
+/*
         setUsername();
         FirebaseRecyclerAdapter<Posts,postviewHolder> recyclerAdapter =new FirebaseRecyclerAdapter<Posts, postviewHolder>(
                 Posts.class,
@@ -171,9 +250,8 @@ public class dept_update extends AppCompatActivity {
             }
         };
         recyclerView.setAdapter(recyclerAdapter);
-
+*/
     }
-
 
 
 
@@ -205,7 +283,7 @@ public class dept_update extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         Log.d("lifecycle","onRestart invoked");
-        Intent intent =new Intent(dept_update.this,MainActivity.class);
+        Intent intent =new Intent(dept_update.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Spinner
+        android:id="@+id/task_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        />
+    <TextView
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:text="Click here to select date"
+        android:gravity="center|start"
+        android:layout_below="@+id/task_spinner"
+        android:id="@+id/caleder_date"
+        android:textSize="8pt"
+        android:layout_margin="10dp"/>
+
+    <EditText
+        android:layout_below="@+id/caleder_date"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:hint="Subject: Alogorithm"
+        android:id="@+id/asnmnt_subj"/>
+
+    <EditText
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/asnmnt_subj"
+        android:hint="Details..."
+        android:id="@+id/asnmnt_dtls"
+        android:gravity="start"
+        android:layout_above="@+id/add_fab"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        app:backgroundTint="@color/backgroundcolor"
+        android:id="@+id/add_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/ic_add_24px"
+        android:contentDescription="add"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"/>
+
+
+</RelativeLayout>

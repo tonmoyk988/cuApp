@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:id="@+id/asnmnt_ct_ro">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/subj">
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:text="Computer archiecture"
+            android:maxLines="1"
+            android:maxLength="15"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_margin="10dp"
+            android:id="@+id/subject_n"/>
+    </LinearLayout>
+
+
+    <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/task"
+        android:layout_toRightOf="@+id/subj"
+        android:layout_marginStart="10dp"
+        >
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="90dp"
+            android:text="Assignment"
+            android:maxLines="1"
+            android:maxLength="10"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_margin="10dp"
+            android:id="@+id/task_n"/>
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/task_date"
+        android:layout_toRightOf="@+id/task"
+        android:layout_marginStart="10dp"
+        >
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:text="20 june"
+            android:maxLines="1"
+            android:maxLength="14"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_margin="10dp"
+            android:id="@+id/tak_date"/>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_assignment_late_24px"
+        android:layout_toRightOf="@+id/task_date"
+        android:layout_alignParentRight="true"
+        android:id="@+id/task_dtls_btn"/>
+</RelativeLayout>
